@@ -1,7 +1,19 @@
-import React from "react";
+import React, { useEffect } from "react"
+import { useParams } from "react-router-dom"
+import { useAppDispatch } from "../../hooks/redux"
+import { fetchProduct } from "../../store/products/product.slice"
 
 const DetailPage = () => {
-  return <div>CartPage</div>;
-};
+  const { id } = useParams();
+  const productId = Number(id);
 
-export default DetailPage;
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    dispatch(fetchProduct(productId));
+  }, [productId]);
+
+  return <div>CarddtPage</div>;
+}
+
+export default DetailPage
