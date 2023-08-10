@@ -15,7 +15,7 @@ const Checkout = () => {
 
   const { isAuth } = useAuth();
 
-  const sendOrder = () => {
+  const sendOrder = (cart) => {
     dispatch(postOrder(cart));
   }
 

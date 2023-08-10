@@ -15,10 +15,12 @@ const CategoryTab = ({ text, categoryName }) => {
         dispatch(setActiveCategory(categoryName))
     }
     
+    // console.log("카테고리:",category);
+    
     return (
       <button
         className={
-          categoryName === category
+          categoryName === category // categoryName은 안바뀌는데 category가 바뀌어서 일치하는것만 active시킴
             ? styles.active_category
             : styles.category_button
         }

@@ -4,6 +4,7 @@ import styles from './FiltersCategory.module.scss';
 import { CategoriesName } from '../../../store/categories/categories.type';
 
 const FiltersCategory = () => {
+  console.log("category : ",CategoriesName);
   return (
     <div className={styles.filter_category}>
       <CategoryTab text={"모두"} categoryName={CategoriesName.All} />

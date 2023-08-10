@@ -37,7 +37,7 @@ const Nav = () => {
               {" "}
               <FiShoppingCart />
             </Link>
-            {products.length > 0 && <b>{products.length}</b>}
+            {products.length > 0 && <b>{products.length}</b> /* if문 단축 문법*/  }
             {products.length > 0 && 
               <div className={styles.nav_hover_cart}>
                 <NavCartBlock />
