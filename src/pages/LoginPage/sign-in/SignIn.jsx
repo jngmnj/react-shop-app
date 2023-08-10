@@ -5,6 +5,7 @@ import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "../../../firebase";
 import { useDispatch } from 'react-redux';
 import { setUser } from "../../../store/user/user.slice";
+import { setUserId } from "../../../store/cart/cart.slice";
 
 const SignIn = () => {
   const navigate = useNavigate();
@@ -12,14 +13,17 @@ const SignIn = () => {
   const dispatch = useDispatch();
   const auth = getAuth(app);
 
-  const handleSignupAndLogin = (email, password) => {
+  const handleLogin = (email, password) => {
     signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        dispatch(setUser({
-          email: userCredential.user.email,
-          token: userCredential.user.token,
-          id: userCredential.user.uid,
-        }))        
+        dispatch(
+          setUser({
+            email: userCredential.user.email,
+            token: userCredential.user.refreshToken,
+            id: userCredential.user.uid,
+          })
+        );        
+        dispatch(setUserId(userCredential.user.uid));
         navigate("/");
       })
       .catch((error) => {
@@ -33,7 +37,7 @@ const SignIn = () => {
   return (
     <Form
       title={"로그인"}
-      getDataForm={handleSignupAndLogin} // prop
+      getDataForm={handleLogin} // prop
       firebaseError={firebaseError}
     />
   );
