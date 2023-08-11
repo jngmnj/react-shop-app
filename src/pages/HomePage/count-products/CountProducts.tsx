@@ -1,6 +1,6 @@
 import React from 'react'
 import { useAppSelector } from '../../../hooks/redux'
-import productsSlice from './../../../store/products/products.slice'
+import productsSlice from '../../../store/products/products.slice'
 import styles from './CountProducts.module.scss'
 
 const CountProducts = () => {

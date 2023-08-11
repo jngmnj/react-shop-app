@@ -1,13 +1,16 @@
-import React from 'react'
-import styles from './OrderItem.module.scss'
+import { FC } from "react";
 import { Link } from 'react-router-dom'
+import { IProduct } from '../../../../store/products/products.types'
+import styles from './OrderItem.module.scss'
 
-const OrderItem = ({ order }) => {
-  
+type OrderItemProps = {
+  order: IProduct
+}
+const OrderItem: FC<OrderItemProps> = ({ order }) => {
   return (
     <li className={styles.order_item}>
       <Link to={`/product/${order.id}`}>
-        <img src={order.image} alt="product card"/>
+        <img src={order.image} alt="product card" />
       </Link>
       <div className={styles.order_description}>
         <h4>{order.category}</h4>
@@ -21,12 +24,10 @@ const OrderItem = ({ order }) => {
       </div>
       <div className={styles.order_total}>
         <h4>합계 : </h4>
-        <span>
-          $ {order.total}
-        </span>
+        <span>$ {order.total}</span>
       </div>
     </li>
-  )
-}
+  );
+};
 
 export default OrderItem

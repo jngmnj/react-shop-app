@@ -1,32 +1,38 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
+import { IProduct } from "./products.types";
 
 export const fetchProducts = createAsyncThunk(
     "products/fetchProducts",
-    async (category, thunkAPI) => {
-        console.log(thunkAPI);
-
+    async (category: string, thunkAPI) => {
         try {
             // category
             let response;
             if(category) {
-                response = await axios.get(`https://fakestoreapi.com/products/category/${category}`);
+                response = await axios.get<IProduct[]>(`https://fakestoreapi.com/products/category/${category}`);
             } else {
-                response = await axios.get("https://fakestoreapi.com/products");
+                response = await axios.get<IProduct[]>("https://fakestoreapi.com/products");
             }
             console.log('@@@', response);
             return response.data; // payload
         } catch (error) {
-            thunkAPI.rejectWithValue("Error loading products");
+            return thunkAPI.rejectWithValue("Error loading products");
         }
     }
 );
 
-const initialState = {
-    products: [],
-    isLoading: false,
-    error: "",
+type ProductsType = {
+    products: IProduct[];
+    isLoading: boolean;
+    error: string;
 }
+
+const initialState: ProductsType = {
+  products: [],
+  isLoading: false,
+  error: "",
+};
+
 export const productsSlice = createSlice({
     name: 'products',
     initialState,
@@ -39,11 +45,11 @@ export const productsSlice = createSlice({
             })
             .addCase(fetchProducts.fulfilled, (state, action) => {
                 state.isLoading = false;
-                state.products = action.payload;
+                state.products = action.payload; // IProduct[] 리턴
             })
             .addCase(fetchProducts.rejected, (state, action) => {
                 state.isLoading = false;
-                state.error = action.payload;
+                state.error = action.payload as string;
             })
 
     }

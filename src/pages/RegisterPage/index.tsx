@@ -1,4 +1,4 @@
-import React from 'react'
+import React from 'react';
 import SignUp from './sign-up/SignUp';
 import { Link } from 'react-router-dom';
 

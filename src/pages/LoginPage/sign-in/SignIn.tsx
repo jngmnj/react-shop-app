@@ -1,30 +1,29 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import Form from "../../../components/form/Form";
-import { createUserWithEmailAndPassword, getAuth } from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import app from "../../../firebase";
-import { setUserId } from "../../../store/cart/cart.slice";
+import { useDispatch } from 'react-redux';
 import { setUser } from "../../../store/user/user.slice";
-import { useDispatch } from "react-redux";
+import { setUserId } from "../../../store/cart/cart.slice";
 
-const SignUp = () => {
+const SignIn = () => {
   const navigate = useNavigate();
   const [firebaseError, setFirebaseError] = useState("");
   const dispatch = useDispatch();
   const auth = getAuth(app);
 
-  const handleSignupAndLogin = (email, password) => {
-    createUserWithEmailAndPassword(auth, email, password)
+  const handleLogin = (email: string, password: string) => {
+    signInWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
-        // 리덕스 스토어에 담는 로직
         dispatch(
           setUser({
             email: userCredential.user.email,
             token: userCredential.user.refreshToken,
             id: userCredential.user.uid,
           })
-        );
-        dispatch(setUserId(userCredential.user.id));
+        );        
+        dispatch(setUserId(userCredential.user.uid));
         navigate("/");
       })
       .catch((error) => {
@@ -34,13 +33,14 @@ const SignUp = () => {
         );
       });
   };
+
   return (
     <Form
-      title={"가입하기"}
-      getDataForm={handleSignupAndLogin} // prop
+      title={"로그인"}
+      getDataForm={handleLogin} // prop
       firebaseError={firebaseError}
     />
   );
 };
 
-export default SignUp;
+export default SignIn;

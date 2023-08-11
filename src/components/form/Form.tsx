@@ -1,13 +1,24 @@
-import React from 'react'
-import styles from './Form.module.scss'
-import { useForm } from 'react-hook-form'
+import React, { FC } from 'react';
+import styles from './Form.module.scss';
+import { FieldValues, SubmitHandler, useForm } from 'react-hook-form';
 
-const Form = ({ title, getDataForm, firebaseError }) => {
-  const { register, handleSubmit, formState: { errors }, reset } = useForm({
+type FormProps = {
+  title: string;
+  getDataForm: (email: string, password: string) => void; // return없어서
+  firebaseError: string;
+}
+
+type Inputs = {
+  email: string;
+  password: string;
+}
+
+const Form: FC<FormProps> = ({ title, getDataForm, firebaseError }) => { // FC는 react
+  const { register, handleSubmit, formState: { errors }, reset } = useForm<Inputs>({
     mode: 'onChange' // 값 바뀔때마다
   })
 
-  const onSubmit = ({ email, password }) => {
+  const onSubmit: SubmitHandler<FieldValues> = ({ email, password }) => { // 타입 react-hook-form에서 제공
     console.log(email, password);
     getDataForm(email, password);
     reset();

@@ -1,10 +1,14 @@
-import React from 'react'
+import { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { useAppDispatch, useAppSelector } from '../../../../hooks/redux';
-import styles from './CardItem.module.scss';
 import { addToCart } from '../../../../store/cart/cart.slice';
+import { IProduct } from '../../../../store/products/products.types';
+import styles from './CardItem.module.scss';
 
-const CardItem = ({ item }) => {
+type CardItemProps = {
+  item: IProduct
+}
+const CardItem: FC<CardItemProps> = ({ item }) => {
   // console.log(item);
 
   const { products } = useAppSelector(state => state.cartSlice);

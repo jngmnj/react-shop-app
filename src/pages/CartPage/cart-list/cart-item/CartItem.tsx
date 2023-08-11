@@ -1,11 +1,15 @@
-import React from 'react'
+import { FC } from 'react';
 import { useAppDispatch } from '../../../../hooks/redux'
 import { deleteFromCart, incrementProduct, decrementProduct } from "../../../../store/cart/cart.slice";
-import styles  from './CartItem.module.scss'
 import { AiOutlineDelete } from 'react-icons/ai'
 import { Link } from 'react-router-dom';
+import { IProduct } from '../../../../store/products/products.types';
+import styles  from './CartItem.module.scss'
 
-const CartItem = ({ item }) => {
+type CartItemProps = {
+  item: IProduct
+}
+const CartItem: FC<CartItemProps> = ({ item }) => {
   const dispatch = useAppDispatch();
 
   const deleteProduct = () => {

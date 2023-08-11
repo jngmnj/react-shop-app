@@ -3,7 +3,7 @@ import styles from './OrdersList.module.scss'
 import { useAuth } from '../../../hooks/useAuth'
 import { useAppDispatch, useAppSelector } from '../../../hooks/redux';
 import { fetchOrder } from '../../../store/order/order.slice';
-import CartEmpty from './../../../components/cart-empty/CartEmpty';
+import CartEmpty from '../../../components/cart-empty/CartEmpty';
 import OrderItem from './order-item/OrderItem';
 
 const OrdersList = () => {
