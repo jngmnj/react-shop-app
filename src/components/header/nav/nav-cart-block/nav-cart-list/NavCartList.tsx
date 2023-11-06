@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import styles from './NavCartList.jsx';
+import styles from './NavCartList.js';
 import { useAppDispatch, useAppSelector } from '../../../../../hooks/redux.js';
 import NavCartItem from './nav-cart-item/NavCartItem.jsx';
 

@@ -1,6 +1,7 @@
 import { PayloadAction, createAsyncThunk, createSlice } from "@reduxjs/toolkit"
 import axios from 'axios';
 import { IProduct } from "../products/products.types";
+import storage from "../../utils/storage";
 
 
 export const postOrder = createAsyncThunk(
@@ -24,14 +25,15 @@ type CartState = {
     userId: string;
 }
 
+const user = storage.get<string>("userId");
+
 const initialState: CartState = {
-  products: localStorage.getItem("cartProducts")
-    ? JSON.parse(localStorage.getItem("cartProducts") || "") // 간단하게 처리
+  // products: localStorage.getItem("cartProducts")
+  products: storage.get<IProduct[]>("cartProducts")
+    ? storage.get<IProduct[]>("cartProducts") // 간단하게 처리 -> error
     : [],
   totalPrice: 0,
-  userId: localStorage.getItem("userId")
-    ? JSON.parse(localStorage.getItem("userId") || "")
-    : "", // error
+  userId: user ? user : "", // error
 };
 
 export const cartSlice = createSlice({
@@ -40,11 +42,13 @@ export const cartSlice = createSlice({
   reducers: {
     setUserId: (state, action: PayloadAction<string>) => {
       state.userId = action.payload;
-      localStorage.setItem("userId", JSON.stringify(state.userId));
+      // localStorage.setItem("userId", JSON.stringify(state.userId));
+      storage.set("userId", state.userId);
     },
     removeUserId: (state) => {
       state.userId = "";
-      localStorage.setItem("userId", JSON.stringify(state.userId));
+      // localStorage.setItem("userId", JSON.stringify(state.userId));
+      storage.set("userId", state.userId);
     },
     addToCart: (state, action: PayloadAction<IProduct>) => {
       state.products.push({
@@ -52,13 +56,15 @@ export const cartSlice = createSlice({
         quantity: 1,
         total: action.payload.price,
       });
-      localStorage.setItem("cartProducts", JSON.stringify(state.products));
+      // localStorage.setItem("cartProducts", JSON.stringify(state.products));
+      storage.set("cartProducts", state.products);
     },
     deleteFromCart: (state, action: PayloadAction<number>) => {
       state.products = state.products.filter(
         (item) => item.id !== action.payload
       ); // itemid가 다른것만 반환됨
-      localStorage.setItem("cartProducts", JSON.stringify(state.products));
+      // localStorage.setItem("cartProducts", JSON.stringify(state.products));
+      storage.set("cartProducts", state.products);
     },
     decrementProduct: (state, action: PayloadAction<number>) => {
       state.products = state.products.map((item) =>
@@ -70,7 +76,7 @@ export const cartSlice = createSlice({
             }
           : item
       );
-      localStorage.setItem("cartProducts", JSON.stringify(state.products));
+      storage.set("cartProducts", state.products);
     },
     incrementProduct: (state, action: PayloadAction<number>) => {
       state.products = state.products.map((item) =>
@@ -82,7 +88,7 @@ export const cartSlice = createSlice({
             }
           : item
       );
-      localStorage.setItem("cartProducts", JSON.stringify(state.products));
+      storage.set("cartProducts", state.products);
     },
     getTotalPrice: (state) => {
       state.totalPrice = state.products.reduce(
@@ -92,7 +98,7 @@ export const cartSlice = createSlice({
     },
     sendOrder: (state) => {
       state.products = [];
-      localStorage.setItem("cartProducts", JSON.stringify(state.products));
+      storage.set("cartProducts", state.products);
     },
   },
 });
